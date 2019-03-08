@@ -1,0 +1,9 @@
+export { Todas_Solicitudes } from './todas_solicitudes.model';
+export { Servicios } from './servicios.model';
+export { TiposServicio } from './tiposservicio.model';
+export { Secretaria } from './secretarias.model';
+export { TiposUsuario } from './tipos_usuario.model';
+export { Dependencias } from './dependencias.model';
+export { Directivo } from './directivos.model';
+export { Usuario } from './usuario.model';
+export { Token } from './token.model';

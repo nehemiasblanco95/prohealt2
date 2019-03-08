@@ -1,0 +1,98 @@
+<div class="row">
+    <div class="col-lg-12" *ngIf="loading">
+        <div class="card">
+            <div class="card-body">
+                <div class="sk-folding-cube sk-spinner">
+                    <div class="sk-cube1 sk-cube"></div>
+                    <div class="sk-cube2 sk-cube"></div>
+                    <div class="sk-cube4 sk-cube"></div>
+                    <div class="sk-cube3 sk-cube"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12 animated bounceInLeft slow" *ngIf="!loading">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-wrap m-b-30">
+                    <h3 class="card-title"><span class="lstick"></span>Reporte de Ventas por Tipo</h3>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-3">
+                        <div class="form-group font-bold">
+                            <label class="control-label">Inicio</label>
+                            <angular2-date-picker [(ngModel)]="date" [settings]="settings"></angular2-date-picker>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group font-bold">
+                            <label class="control-label">Fin</label>
+                            <angular2-date-picker [(ngModel)]="date2" [settings]="settings"></angular2-date-picker>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group font-bold">
+                            <label class="control-label">Tipos</label>
+                            <select class="custom-select col-12" [(ngModel)]="idoperacion_tipo" name="idoperacion_tipo" required>
+                                <option *ngFor="let ot of operacion_tipos" value="{{ot.idoperacion_tipo}}">{{ot.nombre}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 mt-3">
+                        <div class="form-group">
+                            <p>
+                                <button class="btn btn-primary m-t-15 m-r-10" (click)="cargarGrafica()" type="button"><i class="fa fa-search"></i>
+                  Buscar</button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <canvas *ngIf="barChartData[0].data.length > 0 && grafica" baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" [colors]="barChartColors"
+                (chartClick)="chartClicked($event)">
+      </canvas>
+            <div class="alert alert-danger mt-5 m-l-30 m-r-30" role="alert" *ngIf="barChartData[0].data.length == 0">
+                No hay datos en este rango seleccionado
+            </div>
+
+        </div>
+    </div>
+    <div class="col-12 animated bounceInLeft slow" *ngIf="!loading && barChartData[0].data.length> 0">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-wrap m-b-30">
+                    <h3 class="card-title"><span class="lstick"></span>Detalle</h3>
+                </div>
+                <table class="zui-table zui-table-rounded m-b-lg">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Monto</th>
+                            <th>Metodo de Pago</th>
+                            <th>Paciente</th>
+                            <th>Cajero</th>
+                            <th>Tipo de Cambio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let registro of data_tabla">
+                            <td>{{registro.fecha| date: 'd/M/yy, h:mm a'}}</td>
+                            <td>{{registro.monto | currency}}</td>
+                            <td>{{registro.metodo}}</td>
+                            <td>{{registro.paciente}}</td>
+                            <td>{{registro.usuario}}</td>
+                            <td>{{registro.tipo_cambio}}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,60 @@
+.zui-table {
+    width: 100%;
+    border: solid 1px #DDEEEE;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font: normal 13px;
+}
+
+.zui-table thead th {
+    background-color: #555;
+    border: solid 1px #DDEEEE;
+    color: white !important;
+    padding: 10px;
+    text-align: left;
+}
+
+.zui-table tbody td {
+    border: solid 1px #DDEEEE;
+    color: black;
+    padding: 10px;
+}
+
+.zui-table-rounded {
+    border: none;
+}
+
+.zui-table-rounded thead th {
+    background-color: #398bf7;
+    border: none;
+    color: #333;
+}
+
+.zui-table-rounded thead th:first-child {
+    border-radius: 10px 0 0 0;
+}
+
+.zui-table-rounded thead th:last-child {
+    border-radius: 0 10px 0 0;
+}
+
+.zui-table-rounded tbody td {
+    border: none;
+    border-top: solid 1px #fbfbfb;
+    background-color: #e9edf2;
+    /* background-color: #EED592; */
+}
+
+.zui-table-rounded tbody tr:last-child td:first-child {
+    border-radius: 0 0 0 10px;
+}
+
+.zui-table-rounded tbody tr:last-child td:last-child {
+    border-radius: 0 0 10px 0;
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}

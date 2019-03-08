@@ -1,0 +1,4 @@
+[04-Feb-2018 02:24:33 UTC] PHP Parse error:  syntax error, unexpected '$this' (T_VARIABLE) in /home/igeekdev/public_html/api/application/controllers/Notarios.php on line 43
+[04-Feb-2018 05:21:39 UTC] PHP Fatal error:  Call to undefined method CI_Input::put() in /home/igeekdev/public_html/api/application/controllers/Notarios.php on line 42
+[05-Feb-2018 02:34:20 UTC] PHP Fatal error:  Call to undefined method CI_DB_mysqli_driver::post() in /home/igeekdev/public_html/api/application/controllers/Notarios.php on line 42
+[12-Feb-2018 16:20:56 UTC] PHP Fatal error:  Using $this when not in object context in /home/igeekdev/public_html/api/application/helpers/paginacion_helper.php on line 88

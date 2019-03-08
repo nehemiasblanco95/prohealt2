@@ -1,0 +1,639 @@
+<div class="row">
+    <div class="col-12">
+        <div custom-loading [load]="load" class="card">
+            <div class="sk-folding-cube sk-spinner">
+                <div class="sk-cube1 sk-cube"></div>
+                <div class="sk-cube2 sk-cube"></div>
+                <div class="sk-cube4 sk-cube"></div>
+                <div class="sk-cube3 sk-cube"></div>
+            </div>
+            <div class="card-body">
+                <div class="d-flex flex-wrap m-b-30">
+                    <div>
+                        <h3 *ngIf="nuevo" (click)="ver()" class="card-title"><span class="lstick"></span>NUEVO PACIENTE</h3>
+                        <h3 *ngIf="!nuevo" (click)="ver()" class="card-title"><span class="lstick"></span>EDITAR PACIENTE</h3>
+                    </div>
+                </div>
+                <form ngNativeValidate #f="ngForm" (ngSubmit)="agregarMedicamento( f )">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input [(ngModel)]="forma.nombre" name="nombre" type="text" class="form-control text-uppercase" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Paterno</label>
+                                <input [(ngModel)]="forma.paterno" name="paterno" type="text" class="form-control text-uppercase" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Materno</label>
+                                <input [(ngModel)]="forma.materno" type="text" name="materno" class="form-control text-uppercase">
+                            </div>
+                            <div class="form-group">
+                                <label>Correo</label>
+                                <input type="email" [(ngModel)]="forma.correo" name="correo" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Telefono</label>
+                                <input type="text" [(ngModel)]="forma.telefono" name="telefono" class="form-control" mask='(000) 0-00-00-00'>
+                            </div>
+                            <div class="form-group">
+                                <label>Celular</label>
+                                <input type="text" [(ngModel)]="forma.celular" name="celular" class="form-control" mask='(000) 000-00-00'>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ngb-accordion #acc="ngbAccordion" class="accordion">
+                                <ngb-panel id="toggle-1" title="FICHA MEDICA DEL PACIENTE">
+                                    <ng-template ngbPanelContent>
+                                        <br>
+                                        <h3>Datos Personales</h3>
+                                        <hr>
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label>Sexo</label>
+                                                    <select class="form-control custom-select" [(ngModel)]="ficha.sexo" name="sexo">
+                                                            <option value="MASCULINO">MASCULINO</option>
+                                                            <option value="FEMENINO">FEMENINO</option>
+                                                        </select>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label>Edad</label>
+                                                    <input [(ngModel)]="ficha.edad" type="number" name="fecha_edad" class="form-control text-uppercase">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label>Fecha de Nacimiento</label>
+                                                    <angular2-date-picker name="fecha_n" [(ngModel)]="ficha.fecha_n" [settings]="settings"></angular2-date-picker>
+                                                </div>
+
+                                                <div class="form-group col-md-6">
+                                                    <label>Estado Civil</label>
+                                                    <select class="form-control custom-select" [(ngModel)]="ficha.estado_civil" name="estado_civil">
+                                                        <option value="SOLTERO">SOLTERO</option>
+                                                        <option value="CASADO">CASADO</option>
+                                                        <option value="UNION LIBRE">UNI&Oacute; LIBRE</option>
+                                                        <option value="DIVORCIADO">DIVORCIADO</option>
+                                                        <option value="VIUDO">VIUDO</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label>Grupo y RH</label>
+                                                    <input [(ngModel)]="ficha.grupoyrh" type="text" name="grupoyrh" class="form-control text-uppercase">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label>Ocupaci&oacute;n</label>
+                                                    <input [(ngModel)]="ficha.ocupacion" type="text" name="ocupacion" class="form-control text-uppercase">
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    <label>Direcci&oacute;n</label>
+                                                    <input [(ngModel)]="ficha.direccion" type="text" name="direccion" class="form-control text-uppercase">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="ficha.edad <= 11">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="form-group col-md-4">
+                                                        <label>Peso al nacer</label>
+                                                        <input [(ngModel)]="ficha.peso_n" type="number" name="peso_n" class="form-control text-uppercase">
+                                                    </div>
+                                                    <div class="form-group col-md-4">
+                                                        <label>Talla al nacer</label>
+                                                        <input [(ngModel)]="ficha.talla_n" type="number" name="talla_n" class="form-control text-uppercase">
+                                                    </div>
+                                                    <div class="form-group col-md-4">
+                                                        <label>Ablactaci&oacute;n</label>
+                                                        <input [(ngModel)]="ficha.ablactacion" type="text" name="ablactacion" class="form-control text-uppercase">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 m-b-30">
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <div class="row">
+                                                            <label class="col-md-6">Esquema de vacunaci&oacute;n: </label>
+                                                            <div class="custom-control custom-radio col-md-4">
+                                                                <input class="custom-control-input" [(ngModel)]="ficha.esquema" [value]="true" id="esquemasi" name="esquema" type="radio">
+                                                                <label class="custom-control-label" for="esquemasi">Si</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio col-md-4">
+                                                                <input class="custom-control-input" [(ngModel)]="ficha.esquema" [value]="false" id="esquemano" name="esquema" type="radio">
+                                                                <label class="custom-control-label" for="esquemano">No</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <br>
+                                        <h3 class="m-t-40">Antecedentes Familiares Patologicos</h3>
+                                        <hr>
+
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="custom-control custom-checkbox col-md-4">
+                                                    <input class="custom-control-input" id="f_diabetes" type="checkbox" [(ngModel)]="ficha.f_diabetes" name="f_diabetes">
+                                                    <label class="custom-control-label" for="f_diabetes">Diabetes</label>
+                                                </div>
+                                                <div class="custom-control custom-checkbox col-md-4">
+                                                    <input class="custom-control-input" id="f_hipertension" type="checkbox" [(ngModel)]="ficha.f_hipertension" name="f_hipertension">
+                                                    <label class="custom-control-label" for="f_hipertension">Hipertensi&oacute;n</label>
+                                                </div>
+                                                <div class="custom-control custom-checkbox col-md-4">
+                                                    <input class="custom-control-input" id="f_epilepsias" type="checkbox" [(ngModel)]="ficha.f_epilepsias" name="f_epilepsias">
+                                                    <label class="custom-control-label" for="f_epilepsias">Epilepsias</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="custom-control custom-checkbox col-md-4">
+                                                    <input class="custom-control-input" id="f_dislipidemias" type="checkbox" [(ngModel)]="ficha.f_dislipidemias" name="f_dislipidemias">
+                                                    <label class="custom-control-label" for="f_dislipidemias">Dislipidemias</label>
+                                                </div>
+                                                <div class="custom-control custom-checkbox col-md-4">
+                                                    <input class="custom-control-input" id="f_oncologicos" type="checkbox" [(ngModel)]="ficha.f_oncologicos" name="f_oncologicos">
+                                                    <label class="custom-control-label" for="f_oncologicos">Oncol&oacute;gicos</label>
+                                                </div>
+                                                <div class="custom-control custom-checkbox col-md-4">
+                                                    <input class="custom-control-input" id="f_asma" type="checkbox" [(ngModel)]="ficha.f_asma" name="f_asma">
+                                                    <label class="custom-control-label" for="f_asma">Asma</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="custom-control custom-checkbox col-md-4">
+                                                    <input class="custom-control-input" id="f_tiroideos" type="checkbox" [(ngModel)]="ficha.f_tiroideos" name="f_tiroideos">
+                                                    <label class="custom-control-label" for="f_tiroideos">Tiroideos</label>
+                                                </div>
+                                                <div class="custom-control custom-checkbox col-md-4">
+                                                    <input class="custom-control-input" id="f_cardiacos" type="checkbox" [(ngModel)]="ficha.f_cardiacos" name="f_cardiacos">
+                                                    <label class="custom-control-label" for="f_cardiacos">Cardiacos</label>
+                                                </div>
+                                                <div class="custom-control custom-checkbox col-md-4">
+                                                    <input class="custom-control-input" id="f_otros" type="checkbox" [(ngModel)]="ficha.f_otros" name="f_otros">
+                                                    <label class="custom-control-label" for="f_otros">Otros</label>
+                                                </div>
+                                                <br>
+                                                <div class="form-group m-t-15" *ngIf="ficha.f_otros">
+                                                    <label>Especifique otro antecedente familiar </label>
+                                                    <input [(ngModel)]="ficha.f_especifique" name="f_especifique" type="text" class="form-control text-uppercase">
+                                                </div>
+                                                <br>
+                                                <div class="form-group m-t-15">
+                                                    <label>Parentesco(s) con quien(es) presenta el antecedente </label>
+                                                    <input [(ngModel)]="ficha.f_parentesco" name="f_parentesco" type="text" class="form-control text-uppercase">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <br>
+                                        <h3 class="m-t-40">Antecedentes Personales Patologicos</h3>
+                                        <hr>
+                                        <div class="col-md-12 m-b-30">
+                                            <div class="row">
+                                                <div class="custom-control custom-radio col-md-6">
+                                                    <input class="custom-control-input" [(ngModel)]="ficha.patologicos" [value]="true" id="patologicosi" name="patologicos" type="radio">
+                                                    <label class="custom-control-label" for="patologicosi">Si</label>
+                                                </div>
+                                                <div class="custom-control custom-radio col-md-6">
+                                                    <input class="custom-control-input" [(ngModel)]="ficha.patologicos" [value]="false" id="patologicono" name="patologicos" type="radio">
+                                                    <label class="custom-control-label" for="patologicono">No</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="ficha.patologicos == true">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="custom-control custom-checkbox col-md-4">
+                                                        <input class="custom-control-input" id="p_diabetes" type="checkbox" [(ngModel)]="ficha.p_diabetes" name="p_diabetes">
+                                                        <label class="custom-control-label" for="p_diabetes">Diabetes</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox col-md-4">
+                                                        <input class="custom-control-input" id="p_hipertension" type="checkbox" [(ngModel)]="ficha.p_hipertension" name="p_hipertension">
+                                                        <label class="custom-control-label" for="p_hipertension">Hipertensi&oacute;n</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox col-md-4">
+                                                        <input class="custom-control-input" id="p_epilepsias" type="checkbox" [(ngModel)]="ficha.p_epilepsias" name="p_epilepsias">
+                                                        <label class="custom-control-label" for="p_epilepsias">Epilepsias</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="custom-control custom-checkbox col-md-4">
+                                                        <input class="custom-control-input" id="p_dislipidemias" type="checkbox" [(ngModel)]="ficha.p_dislipidemias" name="p_dislipidemias">
+                                                        <label class="custom-control-label" for="p_dislipidemias">Dislipidemias</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox col-md-4">
+                                                        <input class="custom-control-input" id="p_oncologicos" type="checkbox" [(ngModel)]="ficha.p_oncologicos" name="p_oncologicos">
+                                                        <label class="custom-control-label" for="p_oncologicos">Oncol&oacute;gicos</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox col-md-4">
+                                                        <input class="custom-control-input" id="p_asma" type="checkbox" [(ngModel)]="ficha.p_asma" name="p_asma">
+                                                        <label class="custom-control-label" for="p_asma">Asma</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="custom-control custom-checkbox col-md-4">
+                                                        <input class="custom-control-input" id="p_varicela" type="checkbox" [(ngModel)]="ficha.p_varicela" name="p_varicela">
+                                                        <label class="custom-control-label" for="p_varicela">Varicela</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox col-md-4">
+                                                        <input class="custom-control-input" id="p_rubiola" type="checkbox" [(ngModel)]="ficha.p_rubiola" name="p_rubiola">
+                                                        <label class="custom-control-label" for="p_rubiola">Rubiola</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox col-md-4">
+                                                        <input class="custom-control-input" id="p_sarampion" type="checkbox" [(ngModel)]="ficha.p_sarampion" name="p_sarampion">
+                                                        <label class="custom-control-label" for="p_sarampion">Sarampi&oacute;n</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="custom-control custom-checkbox col-md-4">
+                                                        <input class="custom-control-input" id="p_ets" type="checkbox" [(ngModel)]="ficha.p_ets" name="p_ets">
+                                                        <label class="custom-control-label" for="p_ets">Enfermedades de Transmisi&oacute;n Sexual</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox col-md-4">
+                                                        <input class="custom-control-input" id="p_tiroideos" type="checkbox" [(ngModel)]="ficha.p_tiroideos" name="p_tiroideos">
+                                                        <label class="custom-control-label" for="p_tiroideos">Tiroideos</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox col-md-4">
+                                                        <input class="custom-control-input" id="p_cardiacos" type="checkbox" [(ngModel)]="ficha.p_cardiacos" name="p_cardiacos">
+                                                        <label class="custom-control-label" for="p_cardiacos">Cardiacos</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="custom-control custom-checkbox col-md-4">
+                                                        <input class="custom-control-input" id="p_otros" type="checkbox" [(ngModel)]="ficha.p_otros" name="p_otros">
+                                                        <label class="custom-control-label" for="p_otros">Otros</label>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="form-group m-t-15" *ngIf="ficha.p_otros">
+                                                <label>Especifique otro antecedente patologico </label>
+                                                <input [(ngModel)]="ficha.p_especifique" name="p_especifique" type="text" class="form-control text-uppercase">
+                                            </div>
+                                        </div>
+
+                                        <br>
+                                        <h3 class="m-t-40">Antecedentes Personales No Patologicos</h3>
+                                        <hr>
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="custom-control custom-checkbox col-md-4">
+                                                    <input class="custom-control-input" id="no_alcohol" type="checkbox" [(ngModel)]="ficha.no_alcohol" name="no_alcohol">
+                                                    <label class="custom-control-label" for="no_alcohol">Alcohol</label>
+                                                </div>
+                                                <div class="custom-control custom-checkbox col-md-4">
+                                                    <input class="custom-control-input" id="no_tabaco" type="checkbox" [(ngModel)]="ficha.no_tabaco" name="no_tabaco">
+                                                    <label class="custom-control-label" for="no_tabaco">Tabaco</label>
+                                                </div>
+                                                <div class="custom-control custom-checkbox col-md-4">
+                                                    <input class="custom-control-input" id="no_drogas" type="checkbox" [(ngModel)]="ficha.no_drogas" name="no_drogas">
+                                                    <label class="custom-control-label" for="no_drogas">Drogas</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="custom-control custom-checkbox col-md-4">
+                                                    <input class="custom-control-input" id="a_deportes" type="checkbox" [(ngModel)]="ficha.antecedentes_deportes" name="antecedentes_deportes">
+                                                    <label class="custom-control-label" for="a_deportes">Deportes</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <br>
+                                        <h3 class="m-t-40">Antecedentes Personales, Hospitalarios, Traum&aacute;ticos y Quirurgicos</h3>
+                                        <hr>
+                                        <div class="col-md-12 m-b-30">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <div class="row">
+                                                        <label class="col-md-6">Cirugias: </label>
+                                                        <div class="custom-control custom-radio col-md-3">
+                                                            <input class="custom-control-input" [(ngModel)]="ficha.cirugias" [value]="true" id="cirugiassi" name="cirugias" type="radio">
+                                                            <label class="custom-control-label" for="cirugiassi">Si</label>
+                                                        </div>
+                                                        <div class="custom-control custom-radio col-md-3">
+                                                            <input class="custom-control-input" [(ngModel)]="ficha.cirugias" [value]="false" id="cirugiasno" name="cirugias" type="radio">
+                                                            <label class="custom-control-label" for="cirugiasno">No</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-md-offset-1">
+                                                    <div class="form-group" *ngIf="ficha.cirugias">
+                                                        <input [(ngModel)]="ficha.cirugias_especifique" name="cirugias_especifique" type="text" class="form-control text-uppercase" placeholder="Especifique">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 m-b-30">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <div class="row">
+                                                        <label class="col-md-6">Transfunsion: </label>
+                                                        <div class="custom-control custom-radio col-md-3">
+                                                            <input class="custom-control-input" [(ngModel)]="ficha.transfusion" [value]="true" id="transfusionsi" name="transfusion" type="radio">
+                                                            <label class="custom-control-label" for="transfusionsi">Si</label>
+                                                        </div>
+                                                        <div class="custom-control custom-radio col-md-3">
+                                                            <input class="custom-control-input" [(ngModel)]="ficha.transfusion" [value]="false" id="transfusionno" name="transfusion" type="radio">
+                                                            <label class="custom-control-label" for="transfusionno">No</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-md-offset-1">
+                                                    <div class="form-group" *ngIf="ficha.transfusion">
+                                                        <div class="row">
+                                                            <div class="custom-control custom-checkbox col-md-3">
+                                                                <input class="custom-control-input" id="t_sangre" type="checkbox" [(ngModel)]="ficha.t_sangre" name="t_sangre">
+                                                                <label class="custom-control-label" for="t_sangre">Sangre</label>
+                                                            </div>
+                                                            <div class="custom-control custom-checkbox col-md-3">
+                                                                <input class="custom-control-input" id="t_suero" type="checkbox" [(ngModel)]="ficha.t_suero" name="t_suero">
+                                                                <label class="custom-control-label" for="t_suero">Suero</label>
+                                                            </div>
+                                                            <div class="custom-control custom-checkbox col-md-3">
+                                                                <input class="custom-control-input" id="t_plasma" type="checkbox" [(ngModel)]="ficha.t_plasma" name="t_plasma">
+                                                                <label class="custom-control-label" for="t_plasma">Plasma</label>
+                                                            </div>
+                                                            <div class="custom-control custom-checkbox col-md-3">
+                                                                <input class="custom-control-input" id="t_plaquetas" type="checkbox" [(ngModel)]="ficha.t_plaquetas" name="t_plaquetas">
+                                                                <label class="custom-control-label" for="t_plaquetas">Plaquetas</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 m-b-30">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <div class="row">
+                                                        <label class="col-md-6">Traumaticos: </label>
+                                                        <div class="custom-control custom-radio col-md-3">
+                                                            <input class="custom-control-input" [(ngModel)]="ficha.traumaticos" [value]="true" id="traumaticossi" name="traumaticos" type="radio">
+                                                            <label class="custom-control-label" for="traumaticossi">Si</label>
+                                                        </div>
+                                                        <div class="custom-control custom-radio col-md-3">
+                                                            <input class="custom-control-input" [(ngModel)]="ficha.traumaticos" [value]="false" id="traumaticosno" name="traumaticos" type="radio">
+                                                            <label class="custom-control-label" for="traumaticosno">No</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-md-offset-1">
+                                                    <div class="form-group" *ngIf="ficha.traumaticos">
+                                                        <input [(ngModel)]="ficha.traumaticos_especifique" name="traumaticos_especifique" type="text" class="form-control text-uppercase" placeholder="Especifique">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <br>
+                                        <h3 class="m-t-40">Antecedentes Personales Inmuno-al&eacute;rgicos</h3>
+                                        <hr>
+                                        <div class="col-md-12 m-b-30">
+                                            <div class="row">
+                                                <div class="custom-control custom-radio col-md-6">
+                                                    <input class="custom-control-input" [(ngModel)]="ficha.alergicos" [value]="true" id="alergicossi" name="alergicos" type="radio">
+                                                    <label class="custom-control-label" for="alergicossi">Si</label>
+                                                </div>
+                                                <div class="custom-control custom-radio col-md-6">
+                                                    <input class="custom-control-input" [(ngModel)]="ficha.alergicos" [value]="false" id="alergicosno" name="alergicos" type="radio">
+                                                    <label class="custom-control-label" for="alergicosno">No</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group m-t-15 col-md-12" *ngIf="ficha.alergicos">
+                                            <label>Especifique </label>
+                                            <input [(ngModel)]="ficha.alergico_especifique" name="alergico_especifique" type="text" class="form-control text-uppercase">
+                                        </div>
+
+                                        <div *ngIf="ficha.sexo=='FEMENINO'">
+                                            <br>
+                                            <h3 class="m-t-40">Antecedentes Gineco-Obstetra</h3>
+                                            <hr>
+                                            <div class="row m-b-30">
+                                                <div class="form-group col-md-6">
+                                                    <label>Menarqu&iacute;a</label>
+                                                    <input [(ngModel)]="ficha.go_menarquia" type="text" name="go_menarquia" class="form-control text-uppercase">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label>Frecuencia</label>
+                                                    <input [(ngModel)]="ficha.go_frecuencia" type="text" name="go_frecuencia" class="form-control text-uppercase">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label>Duraci&oacute;n</label>
+                                                    <input [(ngModel)]="ficha.go_frecuencia" type="text" name="go_frecuencia" class="form-control text-uppercase">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label>Dismenorrea</label>
+                                                    <input [(ngModel)]="ficha.go_dismenorrea" type="text" name="go_dismenorrea" class="form-control text-uppercase">
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <label>Gestaciones</label>
+                                                    <input [(ngModel)]="ficha.go_gestaciones" type="number" name="go_gestaciones" class="form-control text-uppercase">
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <label>Partos</label>
+                                                    <input [(ngModel)]="ficha.go_partos" type="number" name="go_partos" class="form-control text-uppercase">
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <label>Cesareas</label>
+                                                    <input [(ngModel)]="ficha.go_cesareas" type="number" name="go_cesareas" class="form-control text-uppercase">
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <label>&Oacute;bitos</label>
+                                                    <input [(ngModel)]="ficha.go_obitos" type="number" name="go_obitos" class="form-control text-uppercase">
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    <label>M&eacute;todos Anticonceptivos</label>
+                                                    <input [(ngModel)]="ficha.go_metodos" type="text" name="go_metodos" class="form-control text-uppercase">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label>F.U.M</label>
+                                                    <input [(ngModel)]="ficha.go_fum" type="text" name="go_fum" class="form-control text-uppercase">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label>F.P.P</label>
+                                                    <input [(ngModel)]="ficha.go_fpp" type="text" name="go_fpp" class="form-control text-uppercase">
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <br>
+                                        <h3 class="m-t-40">Historia de la enfermedad actual</h3>
+                                        <hr>
+                                        <div class="form-group">
+                                            <textarea class="form-control" [(ngModel)]="ficha.historia" name="historia" rows="3"></textarea>
+                                        </div>
+                                        <br>
+
+                                        <br>
+                                        <h3 class="m-t-40">Interrogatorio por &Oacute;rganos, Aparatos y Sistemas</h3>
+                                        <hr>
+                                        <div class="row m-b-30">
+                                            <div class="form-group col-md-12">
+                                                <label>Neurologicos</label>
+                                                <input [(ngModel)]="ficha.i_neurologicos" type="text" name="i_neurologicos" class="form-control text-uppercase">
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label>Cardiovascular</label>
+                                                <input [(ngModel)]="ficha.i_cardiovascular" type="text" name="i_cardiovascular" class="form-control text-uppercase">
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label>Respiratorio</label>
+                                                <input [(ngModel)]="ficha.i_respiratorio" type="text" name="i_respiratorio" class="form-control text-uppercase">
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label>Digestivo</label>
+                                                <input [(ngModel)]="ficha.i_digestivo" type="text" name="i_digestivo" class="form-control text-uppercase">
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label>Genitourinario</label>
+                                                <input [(ngModel)]="ficha.i_genitourinario" type="text" name="i_genitourinario" class="form-control text-uppercase">
+                                            </div>
+                                        </div>
+
+                                        <br>
+                                        <h3 class="m-t-40">Exploraci&oacute;n</h3>
+                                        <hr>
+                                        <div class="row m-b-30">
+                                            <div class="form-group col-md-3">
+                                                <label>T/A</label>
+                                                <input [(ngModel)]="ficha.e_ta" type="number" step="any" name="e_ta" class="form-control text-uppercase">
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label>F/C</label>
+                                                <input [(ngModel)]="ficha.e_fc" type="number" step="any" name="e_fc" class="form-control text-uppercase">
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label>F/R</label>
+                                                <input [(ngModel)]="ficha.e_fr" type="number" step="any" name="e_fr" class="form-control text-uppercase">
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label>T"</label>
+                                                <input [(ngModel)]="ficha.e_t" type="number" step="any" name="e_t" class="form-control text-uppercase">
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label>Peso</label>
+                                                <input [(ngModel)]="ficha.e_peso" type="number" step="any" name="e_peso" class="form-control text-uppercase">
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label>Talla</label>
+                                                <input [(ngModel)]="ficha.e_talla" type="number" step="any" name="e_talla" class="form-control text-uppercase">
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label>IMC</label>
+                                                <input [(ngModel)]="ficha.e_imc" type="number" step="any" name="e_imc" class="form-control text-uppercase">
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label>GMT</label>
+                                                <input [(ngModel)]="ficha.e_gmt" type="number" step="any" name="e_gmt" class="form-control text-uppercase">
+                                            </div>
+                                        </div>
+
+                                        <br>
+                                        <h3 class="m-t-40">Examen F&iacute;sico</h3>
+                                        <hr>
+                                        <div class="row m-b-30">
+                                            <div class="form-group col-md-12">
+                                                <label>ORL</label>
+                                                <input [(ngModel)]="ficha.ef_orl" type="text" name="ef_orl" class="form-control text-uppercase">
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label>C/P</label>
+                                                <input [(ngModel)]="ficha.ef_cp" type="text" name="ef_cp" class="form-control text-uppercase">
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label>ABD</label>
+                                                <input [(ngModel)]="ficha.ef_abd" type="text" name="ef_abd" class="form-control text-uppercase">
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label>EXT</label>
+                                                <input [(ngModel)]="ficha.ef_ext" type="text" name="ef_ext" class="form-control text-uppercase">
+                                            </div>
+                                        </div>
+
+                                        <br>
+                                        <h3 class="m-t-40">Diagn&oacute;sticos</h3>
+                                        <hr>
+                                        <div class="col-md-12  m-b-15">
+                                            <div class="row">
+                                                <input [(ngModel)]="ficha.diagnostico" type="text" name="diagnostico" class="form-control text-uppercase col-md-9">
+                                                <a (click)="agregarDiagnostico()" class="btn btn-primary col-md-2 offset-md-1" style="color: white;">Agregar +</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12  m-b-30">
+                                            <ul class="list-group">
+                                                <li class="list-group-item" *ngFor="let diagnostico of ficha.diagnosticos; let i = index">
+                                                    <div class="row">
+                                                        <h4 class="col-md-11">{{ diagnostico }}</h4>
+                                                        <a class="col-md-1 text-center text-danger"><i style="cursor:pointer;" class="fa fa-times-rectangle fa-2x" (click)="quitarDiagnostico(i)"></i></a>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                        <br>
+                                        <h3 class="m-t-40">Tratamientos</h3>
+                                        <hr>
+                                        <div class="col-md-12  m-b-15">
+                                            <div class="row">
+                                                <input [(ngModel)]="ficha.tratamiento" type="text" name="tratamiento" class="form-control text-uppercase col-md-9">
+                                                <a (click)="agregarTratamiento()" class="btn btn-primary col-md-2 offset-md-1" style="color: white;">Agregar +</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12  m-b-30">
+                                            <ul class="list-group">
+                                                <li class="list-group-item" *ngFor="let tratamiento of ficha.tratamientos; let i = index">
+                                                    <div class="row">
+                                                        <h4 class="col-md-11">{{ tratamiento }}</h4>
+                                                        <a class="col-md-1 text-center text-danger"><i class="fa fa-times-rectangle fa-2x" (click)="quitarTratamiento(i)" style="cursor:pointer;"></i></a>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+
+
+                                    </ng-template>
+                                </ngb-panel>
+                            </ngb-accordion>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col text-left">
+                            <button type="button" [routerLink]="['/pacientes']" class="btn btn-danger">Cancelar</button>
+                        </div>
+                        <div class="col text-right">
+                            <button class="btn btn-primary" type="submit" [disabled]="!f.valid"><i class="fa fa-save"></i> Guardar</button>
+                        </div>
+                    </div>
+                    <div class="alert alert-danger mt-2" role="alert" *ngIf="errMsj">
+                        <small>{{errMsj}}</small>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

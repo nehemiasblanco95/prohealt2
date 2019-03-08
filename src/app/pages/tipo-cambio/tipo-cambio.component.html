@@ -1,0 +1,59 @@
+<div class="row">
+    <div class="col-12">
+        <div custom-loading [load]="load" class="card">
+            <div class="sk-folding-cube sk-spinner">
+                <div class="sk-cube1 sk-cube"></div>
+                <div class="sk-cube2 sk-cube"></div>
+                <div class="sk-cube4 sk-cube"></div>
+                <div class="sk-cube3 sk-cube"></div>
+            </div>
+            <div class="card-body">
+                <div class="d-flex flex-wrap m-b-30">
+                    <div>
+                        <h3 class="card-title"><span class="lstick"></span>TIPO DE CAMBIO</h3>
+                    </div>
+                </div>
+                <form ngNativeValidate #f="ngForm">
+                    <div class="col-md-12">
+                        <div class="row">
+
+                            <div class="card-body col-md-6 bg-light-primary" *ngIf="!editar">
+                                <div class="row p-t-10 p-b-10">
+                                    <div class="col p-r-0">
+                                        <h1 class="font-light">{{forma.tipo}}</h1>
+                                        <h6 class="text-muted">Pesos Mexicanos</h6>
+                                    </div>
+                                    <div class="col text-right align-self-center">
+                                        <div class="display-4">
+                                            <i class="mdi mdi-square-inc-cash text-success"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-12" *ngIf="editar">
+                                <label>Nuevo Tipo de Cambio</label>
+                                <input [(ngModel)]="forma.tipo" name="tipo" type="decimal" step="2" class="form-control text-uppercase" required>
+                            </div>
+
+                            <div class="col-md-3 offset-md-3 align-self-center" *ngIf="!editar">
+                                <button class="btn btn-primary" (click)="edicion()"><i class="fa fa-pencil"></i> Editar</button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row" *ngIf="editar">
+                        <hr>
+                        <div class="col text-left">
+                            <button type="button" class="btn btn-danger" (click)="edicion()">Cancelar</button>
+                        </div>
+                        <div class="col text-right">
+                            <button class="btn btn-primary" (click)="editarTipo()" [disabled]="!f.valid"><i class="fa fa-save"></i> Guardar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

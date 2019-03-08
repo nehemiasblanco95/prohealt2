@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col-12">
+        <div custom-loading [load]="load" class="card">
+            <div class="sk-folding-cube sk-spinner">
+                <div class="sk-cube1 sk-cube"></div>
+                <div class="sk-cube2 sk-cube"></div>
+                <div class="sk-cube4 sk-cube"></div>
+                <div class="sk-cube3 sk-cube"></div>
+            </div>
+            <div class="card-body">
+                <div class="d-flex flex-wrap m-b-30">
+                    <div>
+                        <h3 *ngIf="nuevo" class="card-title"><span class="lstick"></span>NUEVO TIPO DE CITA</h3>
+                        <h3 *ngIf="!nuevo" class="card-title"><span class="lstick"></span>EDITAR TIPO DE CITA</h3>
+                    </div>
+                </div>
+                <form ngNativeValidate #f="ngForm" (ngSubmit)="agregarTipo()">
+                    <div class="col-md-12">
+
+                        <div class="form-group">
+                            <label>Nombre del Tipo de Cita</label>
+                            <input [(ngModel)]="forma.nombre" name="nombre" type="text" class="form-control text-uppercase" required>
+                        </div>
+
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col text-left">
+                            <button type="button" [routerLink]="['/tipo_citas']" class="btn btn-danger">Cancelar</button>
+                        </div>
+                        <div class="col text-right">
+                            <button class="btn btn-primary" type="submit" [disabled]="!f.valid"><i class="fa fa-save"></i> Guardar</button>
+                        </div>
+                    </div>
+                    <div class="alert alert-danger mt-2" role="alert" *ngIf="errMsj">
+                        <small>{{errMsj}}</small>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

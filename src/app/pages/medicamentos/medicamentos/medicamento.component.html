@@ -1,0 +1,91 @@
+<div class="row">
+    <div class="col-12">
+        <div custom-loading [load]="load" class="card">
+            <div class="sk-folding-cube sk-spinner">
+                <div class="sk-cube1 sk-cube"></div>
+                <div class="sk-cube2 sk-cube"></div>
+                <div class="sk-cube4 sk-cube"></div>
+                <div class="sk-cube3 sk-cube"></div>
+            </div>
+            <div class="card-body">
+                <div class="d-flex flex-wrap m-b-30">
+                    <div>
+                        <h3 *ngIf="nuevo" (click)="ver()" class="card-title"><span class="lstick"></span>NUEVO MEDICAMENTO</h3>
+                        <h3 *ngIf="!nuevo" (click)="ver()" class="card-title"><span class="lstick"></span>EDITAR MEDICAMENTO</h3>
+                    </div>
+                </div>
+                <form ngNativeValidate #f="ngForm" (ngSubmit)="agregarMedicamento( f )">
+                    <div class="col-md-12">
+
+                        <!-- <div class="form-group">
+                            <label>Tipo de Usuario</label>
+                            <select class="custom-select col-12" [(ngModel)]="usuario.idusuario_tipo" name="idusuario_tipo" required>
+                                <option *ngFor="let tipo_usuario of tipos_usuario" value="{{tipo_usuario.idusuario_tipo}}">{{tipo_usuario.usuario_tipo}}</option>
+                            </select>
+                        </div> -->
+
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input [(ngModel)]="medicamento.nombre" name="nombre" type="text" class="form-control text-uppercase" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Descripcion</label>
+                            <input [(ngModel)]="medicamento.descripcion" name="descripcion" type="text" class="form-control text-uppercase" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tipo de Unidad</label>
+                            <input [(ngModel)]="medicamento.unidad_tipo" name="unidad_tipo" type="text" class="form-control text-uppercase" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Precio por envase</label>
+                            <input [(ngModel)]="medicamento.precio_envase" type="text" name="precio_envase" myNumberOnly class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label *ngIf="nuevo" class="m-r-5">¿Se vende por unidad?</label>
+                            <label *ngIf="!nuevo" class="m-r-5">¿Se vende por {{medicamento.unidad_tipo}}?</label>
+                            <span [ngSwitch]="medicamento.unidad" class="font-bold">
+                <button type="button" class="btn btn-success text-center font-bold btn-sm" style="width:60px"
+                  *ngSwitchCase="1" (click)="medicamento.unidad = '0'">SI</button>
+                <button type="button" class="btn btn-danger text-center font-bold btn-sm" style="width:60px"
+                  *ngSwitchCase="0" (click)="medicamento.unidad = '1'">NO</button>
+              </span>
+                        </div>
+
+                        <div class="form-group" *ngIf="medicamento.unidad == '1'">
+                            <label *ngIf="nuevo">Precio por Unidad</label>
+                            <label *ngIf="!nuevo">Precio por {{medicamento.unidad_tipo}}</label>
+                            <input [(ngModel)]="medicamento.precio_unitario" type="text" name="precio_unitario" myNumberOnly class="form-control" required>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="m-r-5">Habilitado</label>
+                            <span [ngSwitch]="medicamento.activo" class="font-bold">
+                <button type="button" class="btn btn-success text-center font-bold btn-sm" style="width:60px"
+                  *ngSwitchCase="1" (click)="medicamento.activo = '0'">SI</button>
+                <button type="button" class="btn btn-danger text-center font-bold btn-sm" style="width:60px"
+                  *ngSwitchCase="0" (click)="medicamento.activo = '1'">NO</button>
+              </span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col text-left">
+                            <button type="button" [routerLink]="['/medicamentos']" class="btn btn-danger">Cancelar</button>
+                        </div>
+                        <div class="col text-right">
+                            <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Guardar</button>
+                        </div>
+                    </div>
+                    <div class="alert alert-danger mt-2" role="alert" *ngIf="errMsj">
+                        <small>{{errMsj}}</small>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

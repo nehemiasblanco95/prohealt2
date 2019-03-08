@@ -1,0 +1,186 @@
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex flex-wrap m-b-30">
+            <div>
+                <h3 class="card-title"><span class="lstick"></span>CALENDARIO DE CITAS</h3>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <button class="btn btn-primary" (click)="openModal(content)"><i class="fa fa-plus"></i> Nueva cita</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="btn-group">
+                    <div class="btn btn-success" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="activeDayIsOpen = false" (click)="getCitas(view)"> Anterior </div>
+                    <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate" (click)="getCitas(view)"> Hoy </div>
+                    <div class="btn btn-info" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (viewDateChange)="activeDayIsOpen = false" (click)="getCitas(view)"> Siguiente </div>
+                </div>
+            </div>
+            <div class="col-md-4 text-center">
+                <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'es-US'|uppercase }}</h3>
+            </div>
+
+            <div class="col-md-4 text-right">
+                <div class="btn-group">
+                    <div class="btn btn-primary" (click)="getCitas('month')" [class.active]="view === 'month'"> Mes </div>
+                    <div class="btn btn-primary" (click)="getCitas('week')" [class.active]="view === 'week'"> Semana </div>
+                    <div class="btn btn-primary" (click)="getCitas('day')" [class.active]="view === 'day'"> Dia </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div [ngSwitch]="view">
+            <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events" [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)" (eventClicked)="openVer($event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+            </mwl-calendar-month-view>
+            <mwl-calendar-week-view *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="events" [refresh]="refresh" (eventClicked)="openVer($event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+            </mwl-calendar-week-view>
+            <mwl-calendar-day-view *ngSwitchCase="'day'" [viewDate]="viewDate" [events]="events" [refresh]="refresh" (eventClicked)="openVer($event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+            </mwl-calendar-day-view>
+        </div>
+    </div>
+</div>
+
+
+<!-- modal detalle -->
+<ng-template #modalContent let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h2 class="modal-title"><strong>{{ citaData.event.title}}</strong></h2>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body">
+        <div>
+            <h3><strong>Fecha y Hora: </strong>{{ citaData.event.start | date:'M/d/yy, h:mm a' }}</h3>
+        </div>
+        <div>
+            <h3><strong>Tipo de Cita: </strong>{{ citaData.event.tipo}}</h3>
+        </div>
+        <div>
+            <h3><strong>Correo: </strong>{{ citaData.paciente.correo }}</h3>
+        </div>
+        <div>
+            <h3><strong>Telefono: </strong>{{ citaData.paciente.telefono }}</h3>
+        </div>
+        <div>
+            <h3><strong>Celular: </strong>{{ citaData.paciente.celular }}</h3>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="c()"><i class="fa fa-times"></i> Cerrar</button>
+        <button *ngIf="citaData.event.estado !=4 " (click)="c()" (click)="cambiarEstado(citaData.event.idagenda_citas , citaData.event.estado, 4 )" [ladda]="isLoading" data-style="expand-left" class="btn btn-danger"><i class="fa fa-check"></i> Cancelar Cita</button>
+        <button *ngIf="citaData.event.estado == 1" (click)="c()" (click)="cambiarEstado(citaData.event.idagenda_citas , citaData.event.estado, 2 )" [ladda]="isLoading" data-style="expand-left" class="btn btn-warning"><i class="fa fa-check"></i> Confirmar Cita</button>
+        <button *ngIf="citaData.event.estado == 2" (click)="c()" (click)="cambiarEstado(citaData.event.idagenda_citas , citaData.event.estado, 3 )" [ladda]="isLoading" data-style="expand-left" class="btn btn-success"><i class="fa fa-check"></i> Paciente Presente</button>
+    </div>
+</ng-template>
+
+<!-- modal nueva cita -->
+<ng-template #content let-c="close" let-d="dismiss">
+    <form ngNativeValidate #formNueva="ngForm">
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Agendar nueva cita medica</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+            <div class="card-body">
+
+                <div class="row" *ngIf='formaCita.mensaje != "" '>
+                    <div class="col-md-12 ">
+                        <div role="alert" class="alert alert-danger alert-dismissible">
+                            <!----><button aria-label="Close" class="close" type="button"><span aria-hidden="true">×</span></button>{{formaCita.mensaje}}</div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <div class="form-group font-bold"><label>Paciente</label>
+                            <ng-template #rt let-p="result" let-t="term" style="z-index: 10;">
+                                {{ p.nombre}}
+                            </ng-template>
+                            <input required name="paciente" id="typeahead-template" type="text" class="form-control" [(ngModel)]="formaCita.paciente" [ngbTypeahead]="buscarPaciente" [resultTemplate]="rt" [inputFormatter]="formatterPaciente" minlength="3" />
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="form-group font-bold">
+                            <label class="control-label">Fecha y Hora</label>
+                            <angular2-date-picker name="fecha" [(ngModel)]="formaCita.fecha" [settings]="settings"></angular2-date-picker>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group font-bold"><label>Tipo de cita</label>
+                            <select required name="tipo" [(ngModel)]="formaCita.idtipocita" class="form-control custom-select">
+                            <option *ngFor="let tipo of tipos" [value]="tipo.idcitas_tipo">{{tipo.nombre}}</option>
+                        </select></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button [ladda]="isLoading" data-style="expand-left" class="btn btn-primary" (click)="c()" [disabled]="!formNueva.valid"><i class="fa fa-save"></i> Guardar</button>
+        </div>
+    </form>
+</ng-template>
+
+<!-- modal editar cita  -->
+<ng-template #modalEditar let-c="close" let-d="dismiss">
+    <form ngNativeValidate #formEditar="ngForm">
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Editar cita medica</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+            <div class="card-body">
+                <div class="row" *ngIf='formaCitaEditar.mensaje != "" '>
+                    <div class="col-md-12 ">
+                        <div role="alert" class="alert alert-danger alert-dismissible">
+                            <!----><button aria-label="Close" class="close" type="button"><span aria-hidden="true">×</span></button>{{formaCitaEditar.mensaje}}</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <div class="form-group font-bold"><label>Paciente</label>
+                            <ng-template #rt let-p="result" let-t="term" style="z-index: 10;">
+                                {{ p.nombre}}
+                            </ng-template>
+                            <input required name="paciente" id="typeahead-template" type="text" class="form-control" [(ngModel)]="formaCitaEditar.paciente" [ngbTypeahead]="buscarPaciente" [resultTemplate]="rt" [inputFormatter]="formatterPaciente" minlength="3" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="form-group font-bold">
+                            <label class="control-label">Fecha y Hora</label>
+                            <angular2-date-picker name="fecha" [(ngModel)]="formaCitaEditar.fecha" [settings]="settings"></angular2-date-picker>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group font-bold"><label>Tipo de cita</label><select required name="tipo" [(ngModel)]="formaCitaEditar.idtipocita" class="form-control custom-select">
+                            <option *ngFor="let tipo of tipos" [value]="tipo.idcitas_tipo">{{tipo.nombre}}</option>
+                        </select></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="d('Cross click')"><i class="fa fa-times"></i> Cancelar</button>
+            <button [ladda]="isLoading" data-style="expand-left" class="btn btn-primary" (click)="c()" [disabled]="formEditar.invalid"><i class="fa fa-save"></i> Guardar Cambios</button>
+        </div>
+    </form>
+</ng-template>

@@ -1,0 +1,334 @@
+<div class="tabs">
+
+    <input type="radio" id="tab1" name="tab-control" checked>
+    <input type="radio" id="tab2" name="tab-control">
+    <input type="radio" id="tab3" name="tab-control">
+    <input type="radio" id="tab4" name="tab-control">
+    <ul class="especial">
+        <li title="Contado"><label for="tab1" role="button"><i class="fa fa-dollar"></i><br><span> Contado</span></label></li>
+        <li title="Plazos"><label for="tab2" role="button"> <i class="fa fa-credit-card-alt"></i> <br><span> Plazos</span></label></li>
+        <li title="Shipping"><label for="tab3" role="button"><i class="fa fa-plus"></i><br><span> Abonos</span></label></li>
+        <li title="Returns"><label for="tab4" role="button"><i class="fa fa-reorder"></i><br><span> Precios</span></label></li>
+    </ul>
+
+    <div class="slider">
+        <div class="indicator"></div>
+    </div>
+    <div class="content">
+        <section>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-body printableArea" custom-loading [load]="load">
+                        <div class="sk-folding-cube sk-spinner">
+                            <div class="sk-cube1 sk-cube"></div>
+                            <div class="sk-cube2 sk-cube"></div>
+                            <div class="sk-cube4 sk-cube"></div>
+                            <div class="sk-cube3 sk-cube"></div>
+                        </div>
+                        <h3><b>OPERACIONES DE CAJA CONTADO</b></h3>
+                        <hr>
+                        <div class="row">
+                            <!--*** -->
+                            <div class="col-md-6">
+                                <!-- <pre>{{ forma | json }}</pre> -->
+                                <!-- <pre>{{ pacientes | json }}</pre> -->
+                                <div class="form-group">
+                                    <label class="text-warning font-bold">Medicamentos</label>
+                                    <ngx-select-dropdown (change)="changeValue($event)" [multiple]="true" [(value)]="medicamentos" [config]="config" [options]="options"></ngx-select-dropdown>
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-success font-bold">Servicios</label>
+                                    <ngx-select-dropdown (change)="changeValue($event)" [multiple]="true" [(value)]="servicios" [config]="config2" [options]="options2"></ngx-select-dropdown>
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-danger font-bold">Tratamientos</label>
+                                    <ngx-select-dropdown (change)="changeValue($event)" [multiple]="true" [(value)]="tratamientos" [config]="configTratamientos" [options]="optionsTratamientos"></ngx-select-dropdown>
+                                </div>
+                                <div role="alert" class="alert alert-primary">
+                                    <strong>Tomamos su dolar a {{tipo_cambio | currency}} pesos</strong>
+                                </div>
+                            </div>
+                            <!--*** -->
+                            <div class="col-md-12 mt-5" *ngIf="medicamentos.length >=1">
+                                <h3 class="text-center text-primary font-bold">Medicamentos</h3>
+                                <div class="table-responsive m-t-40" style="clear: both;">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">#</th>
+                                                <th class="text-center">Nombre</th>
+                                                <th class="text-center">Unitario</th>
+                                                <th class="text-center">Cantidad</th>
+                                                <th class="text-center">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let elemento of medicamentos index as i">
+                                                <td class="text-center" style="width: 5%; word-break: break-word;">{{i+1}}</td>
+                                                <td class="text-center" style="width: 50%; word-break: break-word;">{{elemento.nombre}}</td>
+                                                <td class="text-center">{{elemento.precio_publico | currency}} </td>
+                                                <td class="text-center">
+                                                    <div class="btn-group" role="group">
+                                                        <button class="btn btn-danger" (click)="quitarCantidad(elemento)"><i class="fa fa-minus"></i></button>
+                                                        <button class="btn btn-secondary">{{elemento.cantidad}}</button>
+                                                        <button class="btn btn-success" (click)="agregaCantidad(elemento)"><i class="fa fa-plus"></i></button>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center"> {{elemento.total | currency}} </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12" *ngIf="servicios.length >=1">
+                                <h3 class="text-center text-primary font-bold">Servicios</h3>
+                                <div class="table-responsive m-t-40" style="clear: both;">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">#</th>
+                                                <th class="text-center">Nombre</th>
+                                                <th class="text-center">Unitario</th>
+                                                <th class="text-center">Cantidad</th>
+                                                <th class="text-center">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let elemento of servicios index as i">
+                                                <td class="text-center" style="width: 5%; word-break: break-word;">{{i+1}}</td>
+                                                <td class="text-center" style="width: 50%; word-break: break-word;">{{elemento.nombre}}</td>
+                                                <td class="text-center">{{elemento.precio_publico | currency}}</td>
+                                                <td class="text-center">
+                                                    <div class="btn-group" role="group">
+                                                        <button class="btn btn-danger" (click)="quitarCantidad(elemento)"><i class="fa fa-minus"></i></button>
+                                                        <button class="btn btn-secondary">{{elemento.cantidad}}</button>
+                                                        <button class="btn btn-success" (click)="agregaCantidad(elemento)"><i class="fa fa-plus"></i></button>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center"> {{elemento.total |currency}} </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12" *ngIf="tratamientos.length >=1">
+                                <h3 class="text-center text-primary font-bold">Tratamientos</h3>
+                                <div class="table-responsive m-t-40" style="clear: both;">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">#</th>
+                                                <th class="text-center">Descripcion</th>
+                                                <th class="text-center">Unitario</th>
+                                                <th class="text-center">Cantidad</th>
+                                                <th class="text-center">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let tratamiento of tratamientos index as i">
+                                                <td class="text-center" style="width: 5%; word-break: break-word;">{{i+1}}</td>
+                                                <td class="text-center" style="width: 50%; word-break: break-word;">{{tratamiento.nombre}}</td>
+                                                <td class="text-center">{{tratamiento.precio_publico | currency}}</td>
+                                                <td class="text-center">
+                                                    <div class="btn-group" role="group">
+                                                        <button class="btn btn-danger" (click)="quitarCantidad(tratamiento)"><i
+                                                            class="fa fa-minus"></i></button>
+                                                        <button class="btn btn-secondary">{{tratamiento.cantidad}}</button>
+                                                        <button class="btn btn-success" (click)="agregaCantidad(tratamiento)"><i
+                                                            class="fa fa-plus"></i></button>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center"> {{tratamiento.total |currency}} </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group col-md-4">
+                                    <label class="text-danger font-bold">Paciente</label>
+                                    <ngx-select-dropdown [multiple]="false" [(value)]="pacientes" [config]="configPaciente" [options]="optionsPacientes" required></ngx-select-dropdown>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div *ngIf="medicamentos.length >=1 || servicios.length >=1 || tratamientos.length >=1">
+                                    <div class="pull-left">
+                                        <div class="form-group">
+                                            <h3><b>Metodo de pago</b></h3>
+                                            <div class="custom-control custom-radio">
+                                                <input [value]="1" [(ngModel)]="idmetodo_pago" checked class="custom-control-input" id="customRadio1" type="radio"><label class="custom-control-label" for="customRadio1"><strong>Efectivo(Pesos)</strong></label>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input [value]="2" [(ngModel)]="idmetodo_pago" class="custom-control-input" id="customRadio2" type="radio"><label class="custom-control-label" for="customRadio2"><strong>Efectivo(Dolares)</strong></label>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input [value]="3" [(ngModel)]="idmetodo_pago" class="custom-control-input" id="customRadio3" type="radio"><label class="custom-control-label" for="customRadio3"><strong>Transferencia</strong></label>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input [value]="4" [(ngModel)]="idmetodo_pago" class="custom-control-input" id="customRadio4" type="radio"><label class="custom-control-label" for="customRadio4"><strong>Tarjeta</strong></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pull-right m-t-30 text-right">
+                                        <h3><b>Total pesos :</b> {{total | currency}}</h3>
+                                        <h3><b>Total dolares :</b> {{totalDolares |currency}}</h3>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <hr>
+                                <div class="text-right">
+                                    <button class="btn btn-danger" (click)="efectuarPago()" *ngIf="medicamentos.length >=1 || servicios.length >=1 || tratamientos.length >=1">
+                                    Proceder a pago </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-body printableArea" custom-loading [load]="load">
+                        <div class="sk-folding-cube sk-spinner">
+                            <div class="sk-cube1 sk-cube"></div>
+                            <div class="sk-cube2 sk-cube"></div>
+                            <div class="sk-cube4 sk-cube"></div>
+                            <div class="sk-cube3 sk-cube"></div>
+                        </div>
+                        <h3><b>TRATAMIENTOS A PLAZO</b></h3>
+                        <hr>
+                        <div class="row">
+                            <!--*** -->
+                            <div class="col-md-6">
+                                <!-- <pre>{{ forma | json }}</pre> -->
+                                <!-- <pre>{{ pacientes | json }}</pre> -->
+
+                                <div class="form-group">
+                                    <label class="text-danger font-bold">Tratamientos</label>
+                                    <ngx-select-dropdown (change)="changeValue($event)" [multiple]="true" [(value)]="tratamientos" [config]="configTratamientos" [options]="optionsTratamientos"></ngx-select-dropdown>
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-danger font-bold">Paciente</label>
+                                    <ngx-select-dropdown [multiple]="false" [(value)]="pacientes" [config]="configPaciente" [options]="optionsPacientes" required></ngx-select-dropdown>
+                                </div>
+                                <div role="alert" class="alert alert-primary">
+                                    <strong>Tomamos su dolar a {{tipo_cambio | currency}} pesos</strong>
+                                </div>
+                            </div>
+                            <!--*** -->
+
+
+
+
+                            <div class="col-md-12" *ngIf="tratamientos.length >=1">
+                                <h3 class="text-center text-primary font-bold">Tratamientos</h3>
+                                <div class="table-responsive m-t-40" style="clear: both;">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">#</th>
+                                                <th class="text-center">Descripcion</th>
+                                                <th class="text-center">Unitario</th>
+                                                <th class="text-center">Cantidad</th>
+                                                <th class="text-center">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr (dblclick)="verDescripcion(tratamiento.descripcion)" *ngFor="let tratamiento of tratamientos index as i">
+                                                <td class="text-center" style="width: 5%; word-break: break-word;">{{i+1}}</td>
+                                                <td class="text-center" style="width: 50%; word-break: break-word;">{{tratamiento.nombre}}</td>
+                                                <td class="text-center">{{tratamiento.precio_publico | currency}}</td>
+                                                <td class="text-center">
+                                                    <div class="btn-group" role="group">
+                                                        <button class="btn btn-danger" (click)="quitarCantidad(tratamiento)"><i
+                                                                class="fa fa-minus"></i></button>
+                                                        <button class="btn btn-secondary">{{tratamiento.cantidad}}</button>
+                                                        <button class="btn btn-success" (click)="agregaCantidad(tratamiento)"><i
+                                                                class="fa fa-plus"></i></button>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center"> {{tratamiento.total |currency}} </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-md-12">
+                                <div *ngIf="tratamientos.length >=1">
+                                    <div class="pull-right m-t-30 text-right">
+                                        <h3><b>Total pesos :</b> {{total | currency}}</h3>
+                                        <h3><b>Total dolares :</b> {{totalDolares |currency}}</h3>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <hr>
+                                <div class="text-right">
+                                    <button class="btn btn-danger" (click)="agregarTratamientoPlazo()" *ngIf="tratamientos.length >=1">
+                                        Agregar tratamiento a paciente </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="alert alert-danger" role="alert" *ngIf="activos_plazo.length == 0">
+                No hay pacientes con tratamientos a plazo actualmente.
+            </div>
+            <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0" class="accordion nav-accordion" *ngIf="activos_plazo.length != 0">
+
+                <ngb-panel [id]="i" *ngFor="let paciente of activos_plazo; let i = index">
+                    <ng-template ngbPanelTitle>
+                        <span class="font-weight-bold">{{paciente.nombre}}</span>
+                    </ng-template>
+                    <ng-template ngbPanelContent>
+                        <div class="row">
+                            <div class="col-md-6" *ngFor="let detalle of paciente.detalle; let i = index">
+                                <div class="card card-outline-inverse bg-light mb-4">
+                                    <div class="card-header">
+                                        <h4 class="m-b-0 text-white">{{detalle.tratamiento}}</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <h3 class="card-title font-bold text-info">COSTO: {{detalle.precio_tratamiento | currency}}</h3>
+                                        <h3 class="card-title font-bold text-danger">PENDIENTE: {{detalle.pendiente | currency}}</h3>
+                                        <div class="alert alert-danger" role="alert" *ngIf="detalle.pagos.length == 0">
+                                            Sin pagos realizados
+                                        </div>
+                                        <table class="table" *ngIf="detalle.pagos.length >0">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th scope="col">Fecha</th>
+                                                    <th scope="col">Abono</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="bg-white">
+                                                <tr *ngFor="let pagos of detalle.pagos">
+                                                    <td>{{pagos.fecha_registro}}</td>
+                                                    <td>{{pagos.pagoPesos | currency}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <button class="btn btn-inverse btn-rounded" type="button" (click)="agregarAbono2(detalle.idpaciente,detalle.idplazo)"><i class="fa fa-plus"></i> Agregar abono</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </ngb-panel>
+            </ngb-accordion>
+        </section>
+        <section>
+            <h2>Disponible proximamente</h2>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa dicta vero rerum? Eaque repudiandae architecto libero reprehenderit aliquam magnam ratione quidem? Nobis doloribus molestiae enim deserunt necessitatibus eaque quidem incidunt.
+        </section>
+    </div>
+</div>

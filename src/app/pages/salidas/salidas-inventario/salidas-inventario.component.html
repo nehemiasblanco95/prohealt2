@@ -1,0 +1,100 @@
+<div class="row">
+    <div class="col-md-6">
+        <div custom-loading [load]="load" class="card">
+            <div class="sk-folding-cube sk-spinner">
+                <div class="sk-cube1 sk-cube"></div>
+                <div class="sk-cube2 sk-cube"></div>
+                <div class="sk-cube4 sk-cube"></div>
+                <div class="sk-cube3 sk-cube"></div>
+            </div>
+            <div class="card-body">
+                <div class="d-flex flex-wrap m-b-30">
+                    <div>
+                        <h3 class="card-title"><span class="lstick"></span>SALIDA DE INVENTARIO</h3>
+                    </div>
+                </div>
+
+                <form ngNativeValidate #f="ngForm" (ngSubmit)="guardar( f )">
+                    <div class="row">
+                        <div class="col">
+                            <p>Llene los campos siguientes para registrar una salida nueva</p>
+
+                            <label for="typeahead-basic">Busqueda en inventario:</label>
+                            <ng-template #rt let-r="result" let-t="term">
+                                {{ r.medicamento_nombre}}
+                            </ng-template>
+                            <input type="text" class="form-control text-uppercase" (ngModelChange)="cambiobusqueda($event)" [(ngModel)]="forma.producto" name="producto" [ngbTypeahead]="searchAlmacen" [resultTemplate]="rt" [inputFormatter]="formatterAlmacen" required/>
+
+                            <div class="form-group m-t-5">
+                                <label>Cantidad</label>
+                                <input type="number" class="form-control" [(ngModel)]="forma.cantidad" name="cantidad" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Comentario</label>
+                                <textarea class="form-control text-uppercase" rows="4" [(ngModel)]="forma.comentario" name="comentario"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Busqueda paciente</label>
+                                <ng-template #rt2 let-re="result" let-t="term">
+                                    {{ re.nombre}}
+                                </ng-template>
+                                <input id="typeahead-template" type="text" class="form-control text-uppercase" [(ngModel)]="forma.paciente" name="paciente" [ngbTypeahead]="searchPacientes" [resultTemplate]="rt2" [inputFormatter]="formatterPacientes" required />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col text-left">
+                            <button type="button" [routerLink]="['/starter']" class="btn btn-danger">Cancelar</button>
+                        </div>
+                        <div class="col text-right">
+                            <button class="btn btn-primary" type="submit" [disabled]="!f.valid"><i class="fa fa-save"></i> Guardar</button>
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div custom-loading [load]="load2" class="card">
+            <div class="sk-folding-cube sk-spinner">
+                <div class="sk-cube1 sk-cube"></div>
+                <div class="sk-cube2 sk-cube"></div>
+                <div class="sk-cube4 sk-cube"></div>
+                <div class="sk-cube3 sk-cube"></div>
+            </div>
+            <div class="card-body" style="height:538px;">
+                <div class="d-flex flex-wrap m-b-30">
+                    <div>
+                        <h3 class="card-title"><span class="lstick"></span>ULTIMOS REGISTROS DE SALIDAS</h3>
+                    </div>
+                </div>
+
+                <div class="row">
+
+
+                    <div class="col">
+                        <p>Listado de las ultimas salidas de este elemento del almacen.</p>
+                        <div class="list-group" *ngIf="!sinResultados">
+                            <a *ngFor="let item of ultimos" class="list-group-item list-group-item-action flex-column align-items-start">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">{{item.usuario_nombre}}</h5>
+                                    <small>{{item.fecha_movimiento}}</small>
+                                </div>
+                                <p class="mb-1">{{item.accion}}: {{item.cantidad_anterior}}<i class="mdi mdi-arrow-right-bold"> </i>{{item.cantidad_nueva}}</p>
+                                <p class="mb-1">{{item.comentario}}</p>
+                            </a>
+                        </div>
+                        <h2 *ngIf="sinResultados" class="text-danger text-center">No hay historial</h2>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>

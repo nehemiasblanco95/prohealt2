@@ -1,0 +1,287 @@
+<div class="row">
+    <div class="col-12">
+        <div custom-loading [load]="load" class="card">
+            <div class="sk-folding-cube sk-spinner">
+                <div class="sk-cube1 sk-cube"></div>
+                <div class="sk-cube2 sk-cube"></div>
+                <div class="sk-cube4 sk-cube"></div>
+                <div class="sk-cube3 sk-cube"></div>
+            </div>
+            <div class="card-body">
+                <div class="d-flex flex-wrap m-b-30">
+                    <div>
+                        <h3 class="card-title"><span class="lstick"></span>HISTORIAL ALMACEN</h3>
+                    </div>
+                </div>
+                <p class="alert alert-danger mt-2 text-center" role="alert" *ngIf="errMsj">
+                    {{errMsj}}
+                </p>
+                <ngb-tabset>
+                    <ngb-tab>
+                        <ng-template ngbTabTitle><b>Todo</b></ng-template>
+                        <ng-template ngbTabContent>
+                            <div class="row mt-3">
+                                <div class="col-lg-12">
+                                    <div class="col mb-2 text-right">
+                                        Registros por pagina
+                                        <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="rpp" (ngModelChange)="loadRpp($event)">
+                                            <label ngbButtonLabel class="btn-primary">
+                                                <input ngbButton type="radio" [value]="20"> 20
+                                            </label>
+                                            <label ngbButtonLabel class="btn-primary">
+                                                <input ngbButton type="radio" [value]="30"> 30
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr class="text-center">
+                                                        <th>REFERENCIA</th>
+                                                        <th>FECHA MOVIMIENTO</th>
+                                                        <th>NOMBRE ELEMENTO</th>
+                                                        <th>CANTIDAD ANTERIOR</th>
+                                                        <th>CANTIDAD NUEVA</th>
+                                                        <th>UNITARIO</th>
+                                                        <th>PUBLICO</th>
+                                                        <th>USUARIO</th>
+                                                        <th>COMENTARIO</th>
+                                                        <th>OPERACION</th>
+                                                    </tr>
+                                                    <!-- <tr>
+                                                                        <th><input [(ngModel)]="filtros.nombre" autocomplete="off" (ngModelChange)="filtrar()" name="nombre" class="form-control form-control-sm" type="text"></th>
+                                                                        <th><input [(ngModel)]="filtros.correo" autocomplete="off" (ngModelChange)="filtrar()" name="correo" class="form-control form-control-sm" type="text"></th>
+                                                                        <th><input [(ngModel)]="filtros.rol" autocomplete="off" (ngModelChange)="filtrar()" name="tipo_usuario" class="form-control form-control-sm" type="text"></th>
+                                                                        <th></th>
+                                                                        <th></th>
+                                                                    </tr> -->
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="text-center" *ngFor="let elemento of elementos">
+                                                        <td>{{elemento.idalmacen_log}}</td>
+                                                        <td>{{elemento.fecha_movimiento}}</td>
+                                                        <td>{{elemento.medicamento_nombre}}</td>
+                                                        <td>{{elemento.cantidad_anterior}}</td>
+                                                        <td>{{elemento.cantidad_nueva}}</td>
+                                                        <td>{{elemento.precio_unitario * elemento.cantidad_nueva| currency}}</td>
+                                                        <td>{{elemento.precio_publico * elemento.cantidad_nueva | currency}}</td>
+                                                        <td>{{elemento.usuario_nombre}}</td>
+                                                        <td>{{elemento.comentario}}</td>
+                                                        <td>{{elemento.accion}}</td>
+
+
+
+                                                    </tr>
+
+
+
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col left">
+                                            <ngb-pagination [collectionSize]="totalItems" [maxSize]="5" [(page)]="pageG" [directionLinks]="true" (pageChange)="loadPage($event)" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
+                                        </div>
+                                        <div class="col text-right">
+                                            Total de registros: {{totalCount}}
+                                        </div>
+                                    </div>
+                                    <hr>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                    <ngb-tab>
+                        <ng-template ngbTabTitle><b>Rango Fecha</b></ng-template>
+                        <ng-template ngbTabContent>
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <div class="form-group font-bold">
+                                        <label class="control-label">Inicio</label>
+                                        <angular2-date-picker [(ngModel)]="date" [settings]="settings"></angular2-date-picker>
+                                    </div>
+                                    <div class="form-group font-bold">
+                                        <label class="control-label">Fin</label>
+                                        <angular2-date-picker [(ngModel)]="date2" [settings]="settings2"></angular2-date-picker>
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="col-md-12 mt-3">
+                                    <div class="form-group">
+                                        <button class="btn btn-primary" (click)="buscar()" type="button">Buscar</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="background-color:#f4f6f9" *ngIf="elementos2">
+                                <div class="col-lg-3 mt-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex no-block">
+                                                <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span></div>
+                                                <div class="align-self-center">
+                                                    <h6 class="m-t-10 m-b-0 text-primary font-weight-bold">Cantidad Entradas</h6>
+                                                    <h2 class="m-t-0">{{total_entradas}}</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 mt-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex no-block">
+                                                <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span></div>
+                                                <div class="align-self-center">
+                                                    <h6 class="text-primary font-weight-bold m-t-10 m-b-0">Cantidad de salidas</h6>
+                                                    <h2 class="m-t-0">{{total_salidas}}</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 mt-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex no-block">
+                                                <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span></div>
+                                                <div class="align-self-center">
+                                                    <h6 class="text-primary font-weight-bold m-t-10 m-b-0">Subtotal Entradas</h6>
+                                                    <h2 class="m-t-0">{{entradas_subtotal | currency}}</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 mt-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex no-block">
+                                                <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span></div>
+                                                <div class="align-self-center">
+                                                    <h6 class="text-primary font-weight-bold m-t-10 m-b-0">Subtotal Salidas</h6>
+                                                    <h2 class="m-t-0">{{salidas_subtotal | currency}}</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex no-block">
+                                                <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span></div>
+                                                <div class="align-self-center">
+                                                    <h6 class="text-primary font-weight-bold m-t-10 m-b-0">Total Entradas</h6>
+                                                    <h2 class="m-t-0">{{entradas_total | currency}}</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex no-block">
+                                                <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span></div>
+                                                <div class="align-self-center">
+                                                    <h6 class="text-primary font-weight-bold m-t-10 m-b-0">Total Salidas</h6>
+                                                    <h2 class="m-t-0">{{salidas_total | currency}}</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div role="alert" *ngIf="!elementos2" class="alert alert-danger alert-dismissible">Seleccione una fecha y de click en buscar</div>
+
+                            <div class="row mt-3" *ngIf="elementos2">
+                                <div class="col-lg-12">
+                                    <div class="col mb-2 text-right">
+                                        Registros por pagina
+                                        <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="rpp2" (ngModelChange)="loadRpp2($event)">
+                                            <label ngbButtonLabel class="btn-primary">
+                                                <input ngbButton type="radio" [value]="20"> 20
+                                            </label>
+                                            <label ngbButtonLabel class="btn-primary">
+                                                <input ngbButton type="radio" [value]="30"> 30
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr class="text-center">
+                                                        <th>REFERENCIA</th>
+                                                        <th>FECHA</th>
+                                                        <th>NOMBRE ELEMENTO</th>
+                                                        <th>CANTIDAD ANTERIOR</th>
+                                                        <th>CANTIDAD NUEVA</th>
+                                                        <th>UNITARIO</th>
+                                                        <th>PUBLICO</th>
+                                                        <th>USUARIO</th>
+                                                        <th>COMENTARIO</th>
+                                                        <th>OPERACION</th>
+                                                    </tr>
+                                                    <!-- <tr>
+                                                                                                    <th><input [(ngModel)]="filtros.nombre" autocomplete="off" (ngModelChange)="filtrar()" name="nombre" class="form-control form-control-sm" type="text"></th>
+                                                                                                    <th><input [(ngModel)]="filtros.correo" autocomplete="off" (ngModelChange)="filtrar()" name="correo" class="form-control form-control-sm" type="text"></th>
+                                                                                                    <th><input [(ngModel)]="filtros.rol" autocomplete="off" (ngModelChange)="filtrar()" name="tipo_usuario" class="form-control form-control-sm" type="text"></th>
+                                                                                                    <th></th>
+                                                                                                    <th></th>
+                                                                                                </tr> -->
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="text-center" *ngFor="let elemento of elementos2">
+                                                        <td>{{elemento.idalmacen_log}}</td>
+                                                        <td>{{elemento.fecha_movimiento}}</td>
+                                                        <td>{{elemento.medicamento_nombre}}</td>
+                                                        <td>{{elemento.cantidad_anterior}}</td>
+                                                        <td>{{elemento.cantidad_nueva}}</td>
+                                                        <td>{{elemento.precio_unitario * elemento.cantidad_nueva| currency}}</td>
+                                                        <td>{{elemento.precio_publico * elemento.cantidad_nueva | currency}}</td>
+                                                        <td>{{elemento.usuario_nombre}}</td>
+                                                        <td>{{elemento.comentario}}</td>
+                                                        <td>{{elemento.accion}}</td>
+
+
+
+                                                    </tr>
+
+
+
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col left">
+                                            <ngb-pagination [collectionSize]="totalItems2" [maxSize]="5" [(page)]="pageG2" [directionLinks]="true" (pageChange)="loadPage2($event)" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
+                                        </div>
+                                        <div class="col text-right">
+                                            Total de registros: {{totalCount2}}
+                                        </div>
+                                    </div>
+                                    <hr>
+                                </div>
+                            </div>
+
+                        </ng-template>
+                    </ngb-tab>
+                </ngb-tabset>
+
+            </div>
+        </div>
+    </div>
+</div>

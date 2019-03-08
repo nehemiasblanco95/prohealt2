@@ -1,0 +1,92 @@
+<div class="row">
+    <div class="col-12">
+        <div custom-loading [load]="load" class="card">
+            <div class="sk-folding-cube sk-spinner">
+                <div class="sk-cube1 sk-cube"></div>
+                <div class="sk-cube2 sk-cube"></div>
+                <div class="sk-cube4 sk-cube"></div>
+                <div class="sk-cube3 sk-cube"></div>
+            </div>
+            <div class="card-body">
+                <div class="d-flex flex-wrap m-b-30">
+                    <div>
+                        <h3 *ngIf="nuevo" class="card-title"><span class="lstick"></span>NUEVO USUARIO</h3>
+                        <h3 *ngIf="!nuevo" (click)="ver()" class="card-title"><span class="lstick"></span>EDITAR USUARIO</h3>
+                    </div>
+                </div>
+                <form ngNativeValidate #f="ngForm" (ngSubmit)="agregarUsuario( f )">
+                    <div class="col-md-12">
+
+                        <div class="form-group">
+                            <label>Tipo de Usuario</label>
+                            <select class="custom-select col-12" [(ngModel)]="usuario.idusuario_tipo" name="idusuario_tipo" required>
+                                <option *ngFor="let tipo_usuario of tipos_usuario" value="{{tipo_usuario.idusuario_tipo}}">{{tipo_usuario.usuario_tipo}}</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Nombre(s)</label>
+                            <input [(ngModel)]="usuario.nombre" name="nombre" type="text" class="form-control" placeholder="Ingrese su nombre" required>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label>Correo</label>
+                            <input type="email" class="form-control" placeholder="Ingrese su correo" [(ngModel)]="usuario.correo" name="correo" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Contraseña</label>
+                            <input type="password" class="form-control" placeholder="Ingrese su contraseña" [(ngModel)]="usuario.password" name="password" [required]="usuario.idusuario === '0'">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Habilitado</label>
+                            <span [ngSwitch]="usuario.activo" class="font-bold">
+                                <button type="button" class="btn btn-success text-center font-bold btn-sm" style="width:60px" *ngSwitchCase="1" (click)="usuario.activo = ''">SI</button>
+                                <button type="button" class="btn btn-danger text-center font-bold btn-sm" style="width:60px" *ngSwitchCase="0" (click)="usuario.activo = '1'">NO</button>
+                            </span>
+                        </div>
+                        <!-- Img upload  -->
+                        <div class="m-t-30">
+                            <p>
+                                <input type="file" (change)="cambioImg($event.target.files)" name="file-1[]" id="file-1" class="inputfile inputfile-1" multiple accept="image/png, image/jpeg" />
+                                <label class="btn btn-primary" for="file-1"> <i class="fa fa-upload mr-1"></i> <span>{{imagenNombre}}</span></label>
+                            </p>
+                            <div class="row">
+                                <div *ngIf="usuario.ruta!=null && usuario.ruta!=''" class="col-lg-4 ">
+                                    <div class="card ">
+                                        <p class="font-weight-bold">Imagen Actual:</p>
+                                        <img style="width: 100px" class="card-img-top img-responsive" [src]="usuario.ruta">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 offset-2" *ngIf="imageSrc != null">
+                                    <p class="font-weight-bold">Vista previa:</p>
+                                    <img style="width: 100px" class="card-img-top mb-3" [src]="imageSrc" />
+                                </div>
+                            </div>
+                        </div>
+                        <!--  -->
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col text-left">
+                            <button type="button" [routerLink]="['/usuarios']" class="btn btn-danger">Cancelar</button>
+                        </div>
+                        <div class="col text-right">
+                            <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Guardar</button>
+                        </div>
+                    </div>
+                    <div class="alert alert-danger mt-2" role="alert" *ngIf="errMsj">
+                        <small>{{errMsj}}</small>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    #file-1 {
+        display: none !important;
+    }
+</style>

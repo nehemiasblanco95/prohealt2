@@ -1,0 +1,73 @@
+<div class="row">
+    <div class="col-12">
+        <div custom-loading [load]="load" class="card">
+            <div class="sk-folding-cube sk-spinner">
+                <div class="sk-cube1 sk-cube"></div>
+                <div class="sk-cube2 sk-cube"></div>
+                <div class="sk-cube4 sk-cube"></div>
+                <div class="sk-cube3 sk-cube"></div>
+            </div>
+            <div class="card-body">
+                <div class="d-flex flex-wrap m-b-30">
+                    <div>
+                        <h3 class="card-title"><span class="lstick"></span>TIPOS DE CITAS</h3>
+                    </div>
+                </div>
+                <p class="alert alert-danger mt-2 text-center" role="alert" *ngIf="errMsj">
+                    {{errMsj}}
+                </p>
+                <button type="button" [routerLink]="['agregar']" class="btn btn-primary">Agregar Tipo de Cita</button>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="col mb-2 text-right">
+                            Registros por pagina
+                            <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="rpp" (ngModelChange)="loadRpp($event)">
+                                <label ngbButtonLabel class="btn-primary">
+                                  <input ngbButton type="radio" [value]="20"> 20
+                              </label>
+                                <label ngbButtonLabel class="btn-primary">
+                                  <input ngbButton type="radio" [value]="30"> 30
+                              </label>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>NOMBRE</th>
+                                            <th>OPCIONES</th>
+                                        </tr>
+                                        <tr>
+                                            <th><input [(ngModel)]="filtros.nombre" autocomplete="off" (ngModelChange)="filtrar()" name="nombre" class="form-control form-control-sm" type="text"></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let tipo of tipos">
+
+                                            <td>{{tipo.nombre}}</td>
+                                            <td width="6%">
+                                                <button type="button" class="btn btn-primary btn-sm" [routerLink]="['editar',tipo.idcitas_tipo]"><i class="fa fa-pencil"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col left">
+                                <ngb-pagination [collectionSize]="totalItems" [maxSize]="5" [(page)]="pageG" [directionLinks]="true" (pageChange)="loadPage($event)" [rotate]="true" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
+                            </div>
+                            <div class="col text-right">
+                                Total de registros: {{totalCount}}
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
